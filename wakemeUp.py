@@ -18,10 +18,9 @@ def home():
 def contactus():
     form = ContactForm()
     if form.validate_on_submit():
-        flash(f'You are in transit, on Bus {form.busNumber.data}!', 'danger')
-        return redirect("transit")
+        flash(f"{form.name.data} ,{form.comment.data}","secondary")
+        return redirect("feedlist")
     return render_template("contact.html", title="Contact Us", form=form)
-
 
 @app.route("/login")
 def login():
@@ -31,6 +30,21 @@ def login():
 @app.route("/help")
 def help():
     return render_template("help.html", title="Help")
+
+
+busstoplist = [{"Bus_Stop_Code": "1234",
+                "Location": "NYP"}]
+
+'''
+@app.route("/destination", methods=['GET', 'POST'])
+def destination():
+    form = DestinationForm()
+    if form.validate_on_submit():
+        if form.journeyFrom.data in [x["Bus_Stop_Code"] for x in busstoplist]:
+            flash(f'You are currently at {busstoplist}, on Bus {form.busNumber.data}')
+            return redirect("transit")
+    return render_template("destinationForm.html", title="Destination", form=form)
+'''
 
 
 @app.route("/destination", methods=['GET', 'POST'])
@@ -53,6 +67,11 @@ def busroutes():
     if form.validate_on_submit():
         flash(f'{form.comment.data}!')
     return render_template("busroutes.html", title="Bus Routes", form=form)
+
+
+@app.route("/feedlist")
+def feedlist():
+    return render_template("feedlist.html", title="Feedlist")
 
 
 if __name__ == "__main__":
