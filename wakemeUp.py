@@ -7,11 +7,11 @@ app = Flask(__name__)
 app.secret_key = 'development key'
 app.config['SECRET_KEY'] = '4f6c484fa2d098ccb271bf1f07173423'
 
+
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template("home.html")
-
 
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
@@ -44,14 +44,6 @@ def destination():
 @app.route("/transit")
 def transit():
     return render_template("inTransitpage.html", title="Transit")
-
-
-@app.route('/busroutes', methods=['GET', 'POST'])
-def busroutes():
-    form = BusRoutes()
-    if form.validate_on_submit():
-        flash(f'{form.comment.data}!')
-    return render_template('busroutes.html', title="Bus Routes", form=form)
 
 
 @app.route("/feedlist")
