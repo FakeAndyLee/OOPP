@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, url_for, redirect, request
-from destinationForm import DestinationForm, BusRoutes, ContactForm
+from destinationForm import DestinationForm, ContactForm, BusRoutes
 
 
 app = Flask(__name__)
@@ -18,13 +18,14 @@ def home():
 def contactus():
     form = ContactForm()
     if form.validate_on_submit():
-        flash(f"{form.name.data} ,{form.comment.data}","secondary")
+        flash(f"{form.name.data} ,{form.comment.data}", "secondary")
         return redirect("feedlist")
     return render_template("contact.html", title="Contact Us", form=form)
 
+
 @app.route("/login")
 def login():
-    pass
+    return render_template("login.html", title="Log In")
 
 
 @app.route("/help")
@@ -51,7 +52,8 @@ def destination():
 def destination():
     form = DestinationForm()
     if form.validate_on_submit():
-        flash(f'You are in transit, on Bus {form.busNumber.data}!', 'danger')
+        flash(f'You are in transit on Bus {form.busNumber.data}, and will be alerted before {form.alertMe.data} stops!'
+              , 'warning')
         return redirect("transit")
     return render_template("destinationForm.html", title="Destination", form=form)
 
@@ -65,13 +67,14 @@ def transit():
 def busroutes():
     form = BusRoutes()
     if form.validate_on_submit():
-        flash(f'{form.comment.data}!')
+        flash(f'{form.comment1.data}!')
+        return redirect("busroutenotes.html")
     return render_template("busroutes.html", title="Bus Routes", form=form)
 
 
 @app.route("/feedlist")
 def feedlist():
-    return render_template("feedlist.html", title="Feedlist")
+    return render_template("feedlist.html", title="Feedback List")
 
 
 if __name__ == "__main__":
